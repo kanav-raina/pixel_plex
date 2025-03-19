@@ -89,11 +89,15 @@ const index = async (req, res) => {
                 }
             },
             { $unwind: { path: '$createBy', preserveNullAndEmptyArrays: true } },
-            { $unwind: { path: '$attendes', preserveNullAndEmptyArrays: true } },
-            { $unwind: { path: '$attendesLead', preserveNullAndEmptyArrays: true } },
             {
                 $addFields: {
-                    createByName: { $concat: ['$createBy.firstName', ' ', '$createBy.lastName'] }
+                    createByName: {
+                        $concat: [
+                            { $ifNull: ['$createBy.firstName', ''] }, 
+                            ' ', 
+                            { $ifNull: ['$createBy.lastName', ''] }
+                        ]
+                    }
                 }
             },
             { $project: { createBy: 0 } }
@@ -143,11 +147,15 @@ const view = async (req, res) => {
                 }
             },
             { $unwind: { path: '$createBy', preserveNullAndEmptyArrays: true } },
-            { $unwind: { path: '$attendes', preserveNullAndEmptyArrays: true } },
-            { $unwind: { path: '$attendesLead', preserveNullAndEmptyArrays: true } },
             {
                 $addFields: {
-                    createByName: { $concat: ['$createBy.firstName', ' ', '$createBy.lastName'] }
+                    createByName: {
+                        $concat: [
+                            { $ifNull: ['$createBy.firstName', ''] }, 
+                            ' ', 
+                            { $ifNull: ['$createBy.lastName', ''] }
+                        ]
+                    }
                 }
             },
             { $project: { createBy: 0 } }
