@@ -168,9 +168,10 @@ const login = async (req, res) => {
             return;
         }
         // Create a JWT token
+        // Use Environment Variable for JWT Secret process.env.JWT_SECRET
         const token = jwt.sign({ userId: user._id }, 'secret_key', { expiresIn: '1d' });
 
-        res.status(200).setHeader('Authorization', `Bearer${token}`).json({ token: token, user });
+        res.status(200).setHeader('Authorization', `Bearer ${token}`).json({ token: token, user });
     } catch (error) {
         res.status(500).json({ error: 'An error occurred' });
     }
